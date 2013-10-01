@@ -44,12 +44,16 @@ module Mailgun
       Mailgun.submit :delete, campaign_url(campaign)
     end
 
+    # Get stats for a campaign
+    def stats(campaign)
+      Mailgun.submit :get, campaign_url(campaign, 'stats')
+    end
 
     private
 
     # Helper method to generate the proper url for Mailgun campaign API calls
-    def campaign_url(id = nil)
-      "#{@mailgun.base_url}/#{@domain}/campaigns#{'/' + id.to_s if id}"
+    def campaign_url(id = nil, action = nil)
+      "#{@mailgun.base_url}/#{@domain}/campaigns#{'/' + id.to_s if id}#{'/' + action if action}"
     end
 
   end
