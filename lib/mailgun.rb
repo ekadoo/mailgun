@@ -15,6 +15,7 @@ require "mailgun/log"
 require "mailgun/list"
 require "mailgun/list/member"
 require "mailgun/message"
+require "mailgun/event"
 
 #require "startup"
 

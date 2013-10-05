@@ -26,6 +26,10 @@ module Mailgun
       Mailgun::Mailbox.new(self, domain)
     end
 
+    def events(domain = Mailgun.domain)
+      @events ||= Mailgun::Event.new(self, domain)
+    end
+
     def messages(domain = Mailgun.domain)
       @messages ||= Mailgun::Message.new(self, domain)
     end
