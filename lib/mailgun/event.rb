@@ -28,7 +28,7 @@ module Mailgun
     end
 
     def events_url
-      "#{@mailgun.base_url}#{@domain}/events"
+      "#{@mailgun.base_url}/#{@domain}/events"
     end
 
     def parse_params(params)
