@@ -49,6 +49,11 @@ module Mailgun
       Mailgun.submit :get, campaign_url(campaign, 'stats')
     end
 
+    # Get events for a campaign
+    def events(campaign, opts = {})
+      Mailgun.submit :get, campaign_url(campaign, 'events'), opts
+    end
+
     private
 
     # Helper method to generate the proper url for Mailgun campaign API calls

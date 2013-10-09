@@ -74,4 +74,24 @@ describe Mailgun::Campaign do
     end
   end
 
+  describe "stats campaign" do
+    it "should make a GET request with the right params" do
+      sample_response = "{\"unique\":{\"clicked\":{\"link\":3,\"recipient\":3},\"opened\":{\"recipient\":3}},\"total\":{\"complained\":0,\"delivered\":67,\"clicked\":6,\"opened\":7,\"dropped\":0,\"bounced\":0,\"sent\":67,\"unsubscribed\":5}}"
+      campaigns_stats_url = @mailgun.campaigns.send(:campaign_url, @sample_capaign[:id], 'stats')
+
+      Mailgun.should_receive(:submit).with(:get, campaigns_stats_url).and_return(sample_response)
+      @mailgun.campaigns.stats(@sample_capaign[:id])
+    end
+  end
+  
+  describe "events campaign" do
+    it "should make a GET request with the right params" do
+      sample_response = "[{\"domain\":\"mailgun.net\",\"tags\":[],\"timestamp\":\"Wed,15Feb201212:58:21GMT\",\"recipient\":\"baz@example.com\",\"event\":\"delivered\",\"user_vars\":{}},{\"domain\":\"mailgun.net\",\"tags\":[],\"timestamp\":\"Wed,15Feb201212:55:15GMT\",\"recipient\":\"baz@example.com\",\"event\":\"delivered\",\"user_vars\":{}}]"
+      campaigns_events_url = @mailgun.campaigns.send(:campaign_url, @sample_capaign[:id], 'events')
+
+      Mailgun.should_receive(:submit).with(:get, campaigns_events_url, {}).and_return(sample_response)
+      @mailgun.campaigns.events(@sample_capaign[:id])
+    end
+  end
+
 end
