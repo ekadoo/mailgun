@@ -1,3 +1,6 @@
+require 'time'
+require 'uri'
+
 module Mailgun
   class Event
 
