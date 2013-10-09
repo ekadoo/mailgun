@@ -23,8 +23,14 @@ module Mailgun
 
     private
     def parse_response(response)
-      @next_url = response['paging']['next']
-      @previous_url = response['paging']['next']
+      @next_url = build_url(response['paging']['next'])
+      @previous_url = build_url(response['paging']['previous'])
+    end
+
+    def build_url(url)
+      uri = URI.parse(url)
+      uri.userinfo = "api:#{Mailgun.api_key}"
+      uri.to_s
     end
 
     def events_url

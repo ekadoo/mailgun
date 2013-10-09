@@ -7,6 +7,7 @@ describe Mailgun::Event do
   let(:event) { Mailgun::Event.new(mailgun, "domain.com") }
 
   let(:result) { JSON.parse(File.read(File.join(File.dirname(__FILE__), 'fixtures/events.json'))) }
+  let(:next_url) { "https://api:api-key@api.mailgun.net/v2/samples.mailgun.org/events/W3siY" }
   let(:last_result) do
     last_result = result.dup
     last_result["items"] = []
@@ -14,7 +15,8 @@ describe Mailgun::Event do
   end
 
   before do
-    mailgun.stub(:base_url => "https://example.mailgun.org/")
+    result["paging"]["next"] = "https://api.mailgun.net/v2/samples.mailgun.org/events/W3siY"
+    mailgun.stub(:base_url => "https://example.mailgun.org")
     event.stub(:mailgun =>  mailgun)
     Mailgun::Event.should_receive(:new).and_return(event)
     Mailgun.stub(:submit).and_return(result)
@@ -34,13 +36,13 @@ describe Mailgun::Event do
 
     it "should be able to fetch next page" do
       mailgun.events.find({})
-      Mailgun.should_receive(:submit).with(:get, result['paging']['next'])
+      Mailgun.should_receive(:submit).with(:get, next_url)
       mailgun.events.next
     end
 
     it "should be able to fetch one more next page" do
       mailgun.events.next
-      Mailgun.should_receive(:submit).with(:get, result['paging']['next'])
+      Mailgun.should_receive(:submit).with(:get, next_url)
       mailgun.events.next
     end
 
