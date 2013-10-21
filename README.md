@@ -200,6 +200,29 @@ Supported route actions are: `:forward`, and `:stop`
 @mailbox.campaigns.delete "Campaign ID"
 ```
 
+#### Events
+```ruby
+# Find events and fetch the first page
+@mailgun.events.find :begin => Time.now - 3600, :ascending => 'yes', :limit => 25, :pretty => 'yes', 'f:recipient' => 'joe@example.com'
+
+# Fetch the next page
+@mailgun.events.next
+
+# Process the events
+
+# fetch first page of the events
+events = @mailgun.events.find(<filter has his here>)
+
+# loop through the events list until it is empty
+until events.empty?
+  events.each do |event|
+     # .... Do something with the event
+  end
+  # fetch the next page
+  events = @mailgun.events.next
+end
+```
+
 ## Making Your Changes
 
   * Fork the project (Github has really good step-by-step directions)
